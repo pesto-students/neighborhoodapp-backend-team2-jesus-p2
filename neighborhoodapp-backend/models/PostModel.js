@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+// import db from './index.js';
 import Users from "./UserModel.js";
 import Category from "./CategoryModel.js"
 
@@ -17,15 +18,9 @@ const Post = db.define('posts', {
         references: {
            model: 'users',
            key: 'id',
-        }
+        },
+        allowNull: false
     }
-    // categoryId: {
-    //     type: DataTypes.INTEGER,
-    //     references: {
-    //        model: 'categories',
-    //        key: 'id',
-    //     }
-    // }
 },{
     freezeTableName:true
 });
@@ -33,7 +28,8 @@ const Post = db.define('posts', {
 Post.belongsTo(Category, {
     foreignKey: 'categoryId',
     as: 'categories', 
-    sourceKey: 'categoryId'
+    sourceKey: 'categoryId',
+    allowNull: false
 });
 
 (async () => {
@@ -41,5 +37,6 @@ Post.belongsTo(Category, {
 })().catch(err => {
     console.error(err);
 });
- 
-export default Users;
+console.log("PostModel is called")
+
+export default Post;

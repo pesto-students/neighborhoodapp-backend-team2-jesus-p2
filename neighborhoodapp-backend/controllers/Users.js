@@ -2,13 +2,29 @@ import Users from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const getUsers = async(req, res) => {
+export const getUser = async(req, res) => {
     try {
-        const users = await Users.findAll({
-            attributes: ['id', 'first_name', 'last_name', 'address', 'pincode', 'city', 'state', 'email']
-        })
-        res.json(users)
+        const user = await req.currentUser
+        delete user.dataValues.password;
+        delete user.dataValues.refresh_token
+        res.json(user);
     } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateUserProfile = async(req, res) => {
+    try {
+        const user = await req.currentUser;
+        if(user){
+            user.update(req.body, {where: {id: user.id}})
+            .then(res.send(user)).catch(err => {
+                res.status(400).send(`${err}`)
+            })
+        }else{
+            res.status(400).send("No user found")
+        }
+    } catch(error) {
         console.log(error);
     }
 }
@@ -27,10 +43,10 @@ export const Register = async(req, res) => {
     } catch(error) {
         console.log(error);
     }
-
 }
 
 export const Login = async(req, res) => {
+    console.log("Login Api is called", req)
     try{
         const user = await Users.findAll({
             where: {

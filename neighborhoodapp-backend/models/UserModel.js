@@ -1,5 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+// import db from './index.js';
+
 
 const { DataTypes } = Sequelize;
 
@@ -23,10 +25,13 @@ const Users = db.define('users', {
         type: DataTypes.TEXT
     },
     email:{
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
     },
     password:{
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
     },
     refresh_token:{
         type: DataTypes.TEXT
@@ -40,5 +45,6 @@ const Users = db.define('users', {
 })().catch(err => {
     console.error(err);
 });
- 
+
+console.log("usersModel is called")
 export default Users;

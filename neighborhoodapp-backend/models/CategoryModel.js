@@ -1,19 +1,21 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
-import Users from "./UserModel.js";
-import Post from "./PostModel.js"
+import Post from "./PostModel.js";
+// import db from './index.js';
+
 
 const { DataTypes } = Sequelize;
 
 const Category = db.define('categories', {
     name: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
     }
 },{
     freezeTableName:true
 });
 
-// Category.hasMany(Post, { as: "posts" });
 
 (async () => {
     await db.sync();
@@ -21,4 +23,4 @@ const Category = db.define('categories', {
     console.error(err);
 });
  
-export default Users;
+export default Category;
