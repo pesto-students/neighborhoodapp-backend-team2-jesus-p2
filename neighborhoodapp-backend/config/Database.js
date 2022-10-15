@@ -2,7 +2,12 @@ import { Sequelize } from "sequelize";
 
 const db = new Sequelize('auth_db', 'root', '', {
     host: '127.0.0.1',
-    dialect: "mysql"
+    dialect: "mysql",
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10 * 1000,
+    },
 })
 
 db
